@@ -1,0 +1,48 @@
+# PromptShiels Configuration
+# =========================
+
+# Model Settings
+models:
+  victim_llm: "meta-llama/Meta-Llama-3-8B-Instruct"
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+  
+# Tier 1: Dynamic Outlier Filtration Settings
+tier1:
+  top_k_retrieval: 10           # Number of documents to retrieve
+  min_k_clusters: 2             # Minimum K for clustering
+  max_k_clusters: 3             # Maximum K for clustering
+  silhouette_threshold: 0.3     # Minimum silhouette score to apply filtering
+  min_cluster_ratio: 0.3        # Minimum ratio of docs in majority cluster
+  
+# Tier 2: Latent Activation Analysis Settings
+tier2:
+  target_layers: [12, 13, 14, 15]  # Llama-3 reasoning layers to probe
+  classifier_path: "models/tier2_classifier.pkl"
+  activation_dim: 4096            # Llama-3-8B hidden dimension
+  confidence_threshold: 0.7       # Classification confidence threshold
+
+# IAO Pipeline Settings
+iao:
+  base_dataset: "ms_marco"
+  num_iterations: 5               # Refinement iterations per poison
+  similarity_threshold: 0.8       # Minimum cosine similarity for valid poison
+  max_samples: 3000               # Total dataset size
+  poison_ratio: 0.5               # Ratio of poisoned samples
+  
+# Vector Database Settings
+vector_db:
+  index_type: "IVFFlat"
+  nlist: 100                      # Number of clusters for IVF
+  nprobe: 10                      # Number of clusters to search
+  
+# Paths
+paths:
+  data_dir: "data"
+  models_dir: "models"
+  logs_dir: "logs"
+  cache_dir: "cache"
+
+# Evaluation
+evaluation:
+  poison_bench_split: "test"
+  metrics: ["accuracy", "precision", "recall", "f1", "attack_success_rate"]

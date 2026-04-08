@@ -1,0 +1,6 @@
+./data
+./venv
+./__pycache__
+./src/tier1/__pycache__
+./src/tier2/__pycache__
+./src/data/
